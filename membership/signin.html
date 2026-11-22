@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to your UPSA surfing account and member profile.">
+  <title>Sign In | United Philippine Surfing Association</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="membership-body">
+  <div class="membership-notice">Find your line. Ride with UPSA. Make every wave count. <a href="membership.html">Membership ↗</a></div>
+  <header class="site-header inner-header">
+    <a class="brand" href="../index.html" aria-label="UPSA home"><img src="https://upsa.ph/wp-content/uploads/2024/10/UPSA_LogoIcon-White.png" alt=""><span><b>UNITED PHILIPPINE</b><small>SURFING ASSOCIATION</small></span></a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="../index.html">Home</a><div class="nav-dropdown"><a href="../about/about.html" aria-expanded="false">About <span class="dropdown-arrow">⌄</span></a><div class="dropdown-menu"><a href="../about/about.html">About UPSA</a><a href="../about/leadership.html">Leadership</a><a href="../about/technical-team.html">Technical Team</a><a href="../about/surf-club-directory.html">Surf Club Directory</a></div></div>
+      <a href="../events.html">Events</a><a class="active" href="membership.html">Membership</a>
+      <div class="nav-dropdown"><a href="../rankings/rankings.html">Rankings <span class="dropdown-arrow">⌄</span></a><div class="dropdown-menu"><a href="../rankings/2026-tour.html">2026 Rankings</a><a href="../rankings/2025-tour.html">2025 Rankings</a><a href="../rankings/2024-tour.html">2024 Rankings</a><a href="../rankings/2023-tour.html">2023 Rankings</a><a href="../rankings/2022-tour.html">2022 Rankings</a></div></div>
+      <a href="../news.html">News</a><a href="../contact.html">Contact</a>
+    </nav>
+    <a class="partner-link" href="../contact.html">Become a partner <span>↗</span></a>
+    <button class="menu-button" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
+  </header>
+
+  <main class="membership-page member-auth-page">
+    <section class="member-account-content">
+      <div class="member-account-heading">
+        <span>Welcome back</span>
+        <h1>Sign in to your UPSA account</h1>
+        <p>Sign in to manage your surfer profile and view membership options.</p>
+      </div>
+      <p class="member-account-notice" id="auth-notice" role="status" aria-live="polite" hidden></p>
+      <div class="member-account-setup" id="backend-setup" hidden>
+        <h2>Account setup unavailable</h2>
+        <p>Member accounts are not configured yet. Please try again later.</p>
+      </div>
+      <section class="member-auth-panel member-auth-single" id="auth-form-panel">
+        <form class="member-form" id="signin-form">
+          <h3>Sign in</h3>
+          <label for="signin-email">Email</label>
+          <input id="signin-email" name="email" type="email" autocomplete="email" required>
+          <label for="signin-password">Password</label>
+          <input id="signin-password" name="password" type="password" autocomplete="current-password" required>
+          <button type="submit">Sign in <span>↗</span></button>
+          <button class="member-text-button" id="reset-password" type="button">Send password reset email</button>
+        </form>
+        <p class="member-auth-links">New to UPSA? <a href="signup.html">Create an account</a></p>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand"><img src="https://upsa.ph/wp-content/uploads/2020/05/UPSA_Logo1-white-1-183x300.png" alt="UPSA"><p>United Philippine<br>Surfing Association</p></div>
+    <div><span>Explore</span><a href="../about/about.html">About us</a><a href="../events.html">Events</a><a href="membership.html">Membership</a></div>
+    <div class="footer-social"><span>Connect</span><div>
+      <a href="https://www.facebook.com/officialupsa.ph" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="https://cdn.simpleicons.org/facebook/FFFFFF" alt=""></a>
+      <a href="https://www.instagram.com/upsa.ph" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt=""></a>
+      <a href="https://www.youtube.com/@pilipinassurfing" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="https://cdn.simpleicons.org/youtube/FFFFFF" alt=""></a>
+      <a href="https://www.linkedin.com/company/upsaph" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><span class="footer-linkedin-mark" aria-hidden="true">in</span></a>
+    </div></div>
+    <div class="footer-bottom"><span>© 2026 UPSA</span><span>Made for Philippine surfing</span></div>
+  </footer>
+  <script src="../supabase/config.js"></script>
+  <script type="module" src="../membership-auth.js"></script>
+  <script src="../script.js"></script>
+</body>
+</html>

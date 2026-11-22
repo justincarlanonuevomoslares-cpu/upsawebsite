@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+*.local
+
+node_modules/
+.vscode/
+
+supabase/.temp/
+supabase/.branches/
+
+.DS_Store
+Thumbs.db
+/z_upgrade.txt
