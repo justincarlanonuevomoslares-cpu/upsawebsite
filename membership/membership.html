@@ -29,14 +29,14 @@
       <div>
         <span>United Philippine Surfing Association</span>
         <h1>Find your line. Make every wave count.</h1>
-        <p>Build your surfer profile, connect with the UPSA community, and explore National Tour membership options.</p>
+        <p>Join the UPSA community, manage your athlete profile in its dedicated dashboard, and explore National Tour membership options.</p>
         <div class="membership-actions" id="membership-guest-actions">
           <a class="membership-primary-action" href="signup.html">Create your account <span>↗</span></a>
           <a class="membership-secondary-action" href="signin.html">Already a member? Sign in</a>
         </div>
         <div class="membership-actions" id="membership-member-actions" hidden>
           <a class="membership-primary-action" href="#membership-plans">Explore membership plans <span>↘</span></a>
-          <a class="membership-secondary-action" href="#membership-account">Manage your profile</a>
+          <a class="membership-secondary-action" id="membership-hero-dashboard-link" href="../dashboards/athlete.html" target="_blank" rel="noopener noreferrer">Open dashboard ↗</a>
         </div>
       </div>
     </section>
@@ -44,8 +44,8 @@
     <section class="member-account-content" id="membership-account" aria-labelledby="membership-account-title">
       <div class="member-account-heading">
         <span>UPSA member account</span>
-        <h2 id="membership-account-title">Your account and membership, together.</h2>
-        <p>Create an account or sign in to customize your surfer profile and access membership plans and registration. Creating an account does not itself register or pay for membership.</p>
+        <h2 id="membership-account-title">Your membership starts here.</h2>
+        <p>Create an account or sign in to access membership plans and registration. Manage your athlete profile from the separate dashboard. Creating an account does not itself register or pay for membership.</p>
       </div>
       <p class="member-account-notice" id="account-notice" role="status" aria-live="polite" hidden></p>
       <div class="member-account-setup" id="backend-setup" hidden>
@@ -71,115 +71,18 @@
         <button class="member-secondary-button" id="profile-load-signout" type="button">Sign out</button>
       </section>
 
-      <section class="member-editor" id="profile-editor" hidden aria-labelledby="member-editor-title">
+      <section class="member-editor" id="membership-dashboard-launch" hidden aria-labelledby="membership-dashboard-title">
         <div class="member-editor-toolbar">
           <div class="member-account-heading">
-            <span>Member profile</span>
-            <h2 id="member-editor-title">Make it yours</h2>
+            <span>Member access</span>
+            <h2 id="membership-dashboard-title">Your UPSA dashboard is ready.</h2>
+            <p>Manage your athlete profile, rankings connection, and Reels from the dedicated dashboard.</p>
           </div>
           <div class="member-editor-actions">
-            <a class="member-secondary-button" id="public-profile-link" href="../member-profile.html">View public profile <span>↗</span></a>
-            <a class="member-secondary-button" id="admin-dashboard-link" href="../admin.html" hidden>Admin dashboard <span>↗</span></a>
-            <a class="member-secondary-button" href="#membership-plans">Choose a membership plan <span>↘</span></a>
-            <button class="member-secondary-button" id="signout-button" type="button">Sign out</button>
+            <a class="member-auth-action-primary" id="membership-dashboard-link" href="../dashboards/athlete.html" target="_blank" rel="noopener noreferrer" aria-disabled="true">Open dashboard in a new tab <span>↗</span></a>
+            <button class="member-secondary-button" id="membership-signout-button" type="button">Sign out</button>
           </div>
         </div>
-        <form class="member-form member-profile-form" id="profile-form">
-          <div class="member-form-grid">
-            <div>
-              <label for="profile-username">Profile address</label>
-              <div class="member-username-field"><span>…/member-profile.html?username=</span><input id="profile-username" name="username" type="text" maxlength="24" pattern="[a-z0-9][a-z0-9-]{2,23}" required></div>
-              <small>3–24 lowercase letters, numbers, or hyphens.</small>
-            </div>
-            <div>
-              <label for="profile-display-name">Display name</label>
-              <input id="profile-display-name" name="display_name" type="text" maxlength="80" required>
-            </div>
-            <div>
-              <label for="profile-nationality">Nationality</label>
-              <select id="profile-nationality" name="nationality">
-                <option value="">Select a country</option>
-              </select>
-              <small id="nationality-flag-preview">Choose a country to preview its flag.</small>
-            </div>
-            <div class="member-form-wide">
-              <label for="profile-bio">About you</label>
-              <textarea id="profile-bio" name="bio" rows="4" maxlength="500"></textarea>
-            </div>
-            <div>
-              <label for="profile-home-break">Home break</label>
-              <input id="profile-home-break" name="home_break" type="text" maxlength="120">
-            </div>
-            <div>
-              <label for="profile-surf-club">Surf club</label>
-              <input id="profile-surf-club" name="surf_club" type="text" maxlength="120">
-            </div>
-            <div>
-              <label for="profile-instagram">Instagram handle</label>
-              <input id="profile-instagram" name="instagram_handle" type="text" maxlength="30" placeholder="@yourhandle">
-            </div>
-            <div>
-              <label for="profile-website">Website link</label>
-              <input id="profile-website" name="website_url" type="url" maxlength="2048" placeholder="https://example.com">
-            </div>
-            <div>
-              <label for="profile-photo-file">Upload profile photo</label>
-              <input id="profile-photo-file" name="profile_photo_file" type="file" accept="image/jpeg,image/png,image/webp">
-              <img class="member-image-preview" id="profile-photo-preview" alt="Profile photo preview" hidden>
-              <small id="profile-photo-status">JPG, PNG, or WebP; maximum 5 MB.</small>
-              <label class="member-photo-remove"><input id="remove-profile-photo" name="remove_profile_photo" type="checkbox"> Remove current photo if no replacement is selected</label>
-            </div>
-            <div>
-              <label for="cover-photo-file">Upload cover photo</label>
-              <input id="cover-photo-file" name="cover_photo_file" type="file" accept="image/jpeg,image/png,image/webp">
-              <img class="member-image-preview member-cover-preview" id="cover-photo-preview" alt="Cover photo preview" hidden>
-              <small id="cover-photo-status">JPG, PNG, or WebP; maximum 5 MB.</small>
-              <label class="member-photo-remove"><input id="remove-cover-photo" name="remove_cover_photo" type="checkbox"> Remove current photo if no replacement is selected</label>
-            </div>
-            <div>
-              <label for="profile-theme">Profile style</label>
-              <select id="profile-theme" name="theme">
-                <option value="ocean">Ocean blue</option>
-                <option value="sand">Warm sand</option>
-                <option value="sunset">Sunset</option>
-                <option value="midnight">Midnight</option>
-              </select>
-            </div>
-            <p class="member-image-privacy-note">Uploaded profile and cover images use public storage. Anyone with an image URL may view it, even if your profile is private.</p>
-            <label class="member-public-toggle"><input id="profile-is-public" name="is_public" type="checkbox"> Show my profile and Reels publicly</label>
-          </div>
-          <button type="submit">Save profile <span>↗</span></button>
-        </form>
-
-        <section class="member-athlete-claim" aria-labelledby="member-athlete-claim-title">
-          <div class="member-account-heading">
-            <span>Official rankings profile</span>
-            <h2 id="member-athlete-claim-title">Connect your athlete profile</h2>
-            <p>Enter the Athlete ID shown in the UPSA rankings. UPSA will verify your request before your profile details and social links appear on the official athlete page. Rankings and results remain read-only.</p>
-          </div>
-          <p class="member-athlete-claim-status" id="athlete-link-status" role="status" aria-live="polite"></p>
-          <form class="member-form member-claim-form" id="athlete-claim-form">
-            <label for="athlete-id-claim">Athlete ID</label>
-            <input id="athlete-id-claim" name="source_athlete_id" type="text" maxlength="80" autocomplete="off" required>
-            <label for="athlete-claim-evidence">Note for UPSA reviewers (optional)</label>
-            <textarea id="athlete-claim-evidence" name="evidence" rows="3" maxlength="1000" placeholder="Explain how UPSA can verify this is your profile. Do not include passwords or sensitive information."></textarea>
-            <button type="submit">Request profile connection <span>↗</span></button>
-          </form>
-        </section>
-
-        <section class="member-reels-editor" aria-labelledby="member-reels-title">
-          <div class="member-account-heading">
-            <span>Instagram</span>
-            <h2 id="member-reels-title">Share your Reels</h2>
-            <p>Add a public Instagram Reel URL. Reels are embedded from Instagram; this site does not download or re-upload Instagram videos.</p>
-          </div>
-          <form class="member-reel-form" id="reel-form">
-            <label for="reel-url">Public Instagram Reel link</label>
-            <div><input id="reel-url" name="reel_url" type="url" placeholder="https://www.instagram.com/reel/..." required><button type="submit">Add Reel <span>↗</span></button></div>
-          </form>
-          <p class="member-reel-empty" id="reel-empty">You haven't added any Reels yet.</p>
-          <ul class="member-reel-list" id="reel-list"></ul>
-        </section>
       </section>
     </section>
 
@@ -289,7 +192,7 @@
     <div class="footer-bottom"><span>© 2026 UPSA</span><span>Made for Philippine surfing</span></div>
   </footer>
   <script src="../supabase/config.js"></script>
-  <script type="module" src="../account.js"></script>
+  <script type="module" src="../membership-page.js"></script>
   <script src="../script.js"></script>
 </body>
 </html>

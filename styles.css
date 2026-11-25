@@ -283,7 +283,123 @@ img { display:block; width:100%; }
 .member-public-missing h1 { font-size:clamp(56px,8vw,95px); }
 .member-public-missing p { margin-bottom:28px; color:#d5dfe4; }
 .member-public-missing > span { color:var(--lime); }
+.athlete-dashboard-body { min-width:320px; background:#f4f4f0; }
+.athlete-dashboard-app { min-height:100vh; display:grid; grid-template-columns:220px minmax(0,1fr); grid-template-rows:76px minmax(0,1fr); }
+.athlete-dashboard-header { grid-column:1/-1; position:sticky; top:0; z-index:50; height:76px; padding:0 32px 0 20px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #e2e2dc; background:#fff; }
+.athlete-dashboard-brand { display:flex; align-items:center; gap:10px; color:#17374b; }
+.athlete-dashboard-brand svg { width:42px; height:42px; }
+.athlete-dashboard-brand b { max-width:175px; font-family:"Barlow Condensed",sans-serif; font-size:12px; line-height:.9; text-transform:uppercase; }
+.athlete-dashboard-brand b span { display:block; color:#17374b; font-size:17px; }
+.athlete-dashboard-actions { position:relative; display:flex; align-items:center; gap:12px; }
+.dashboard-icon-button { width:40px; height:40px; padding:0; border:0; border-radius:50%; color:#17374b; background:transparent; font-size:22px; cursor:pointer; }
+.dashboard-icon-button:hover { background:#f0f2ed; }
+.dashboard-icon-button:focus-visible, .dashboard-avatar:focus-visible { outline:3px solid #4058df; outline-offset:2px; }
+.dashboard-notifications { position:relative; }
+.dashboard-notifications[data-has-notifications="true"]::after { content:""; position:absolute; top:1px; right:-1px; width:5px; height:5px; border:1px solid white; border-radius:50%; background:#d54a3d; }
+.dashboard-avatar { width:38px; height:38px; border:0; border-radius:50%; color:#fff; background:#d57835; font-family:"Barlow Condensed",sans-serif; font-size:16px; cursor:pointer; }
+.dashboard-popover { position:absolute; top:calc(100% + 14px); right:0; z-index:60; width:min(340px,calc(100vw - 24px)); padding:16px; border:1px solid #e0e0da; color:#17374b; background:#fff; box-shadow:0 12px 30px rgba(8,40,59,.16); }
+.dashboard-popover[hidden] { display:none; }
+.dashboard-search-popover { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+.dashboard-search-popover input { min-width:0; min-height:38px; padding:8px 10px; border:1px solid #c9d0ce; color:#17374b; font:12px "DM Sans",sans-serif; }
+.dashboard-search-popover > button, .dashboard-account-popover button { min-height:36px; padding:8px 12px; border:0; color:#fff; background:#4058df; font:600 11px "DM Sans",sans-serif; cursor:pointer; }
+.dashboard-search-popover p { grid-column:1/-1; margin:0; color:#66777a; font-size:11px; }
+.dashboard-notification-popover h2 { margin:0 0 8px; font-size:14px; }
+.dashboard-notification-popover p, .dashboard-account-popover p { margin:0; color:#66777a; font-size:12px; line-height:1.55; overflow-wrap:anywhere; }
+.dashboard-account-popover { display:grid; gap:9px; }
+.dashboard-account-popover button { text-align:left; }
+.dashboard-account-popover button:last-child { border:1px solid #d5d8d1; color:#17374b; background:white; }
+.dashboard-popover :focus-visible { outline:2px solid #4058df; outline-offset:2px; }
+.athlete-dashboard-sidebar { grid-column:1; grid-row:2; position:sticky; top:76px; height:calc(100vh - 76px); padding:22px 12px 16px; display:flex; flex-direction:column; justify-content:space-between; background:#fff; }
+.athlete-dashboard-sidebar nav { display:grid; gap:6px; }
+.dashboard-nav-item { min-height:44px; padding:9px 12px; display:flex; align-items:center; gap:11px; border:0; border-radius:6px; color:#52646a; background:transparent; font-size:14px; text-align:left; cursor:pointer; }
+.dashboard-nav-item span { width:16px; text-align:center; }
+.dashboard-nav-item.active { color:#17374b; background:#cfd2ff; }
+.dashboard-upgrade { margin:0 4px; padding:13px 10px; border:1px solid #e0e0da; background:#f8f8f5; text-align:center; }
+.dashboard-upgrade p { margin:0 0 11px; color:#647579; font-size:11px; line-height:1.5; }
+.dashboard-upgrade a { width:100%; min-height:38px; padding:9px 10px; display:flex; align-items:center; justify-content:center; gap:7px; color:white; background:#3e56dd; font-size:12px; font-weight:700; text-decoration:none; text-transform:uppercase; }
+.dashboard-upgrade a:hover { background:#3048c4; }
+.dashboard-upgrade a:focus-visible { outline:3px solid #17374b; outline-offset:3px; }
+.athlete-dashboard-main { grid-column:2; grid-row:2; min-width:0; padding:30px 40px 56px; background:#f4f4f0; }
+.dashboard-view { display:none; }
+.dashboard-view.active { display:block; }
+.dashboard-welcome { min-height:104px; margin-bottom:22px; padding:20px 24px; display:flex; align-items:flex-start; justify-content:space-between; gap:20px; border:1px solid #e0e0da; background:#fff; }
+.dashboard-welcome h1 { margin:0 0 8px; color:#17374b; font-family:"DM Sans",sans-serif; font-size:21px; }
+.dashboard-welcome p { margin:0; color:#647579; font-size:13px; line-height:1.55; }
+.dashboard-welcome p strong { color:#93a13b; }
+.dashboard-progress { width:112px; min-height:100px; margin:-1px -1px 0 0; padding:13px; display:grid; border:1px solid #e4e4de; color:#52646a; text-align:left; }
+.dashboard-progress > span { width:21px; height:21px; display:grid; place-items:center; border-radius:50%; color:white; background:#23aee7; font-size:11px; }
+.dashboard-progress strong { margin-top:8px; font-size:10px; }
+.dashboard-progress b { margin-top:3px; color:#17374b; font-size:13px; }
+.dashboard-progress small { color:#87928e; font-size:9px; }
+.dashboard-section { margin-top:22px; }
+.dashboard-section-heading { min-height:40px; display:flex; align-items:center; justify-content:space-between; }
+.dashboard-section-heading h2, .dashboard-page-title { margin:0; color:#17374b; font-family:"DM Sans",sans-serif; font-size:21px; font-weight:600; }
+.dashboard-section-heading a { color:#17374b; font-size:11px; font-weight:700; text-transform:uppercase; }
+.dashboard-event-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+.dashboard-event-card { min-width:0; overflow:hidden; border:1px solid #e0e0da; background:#fff; }
+.dashboard-event-image { position:relative; height:132px; display:flex; align-items:center; justify-content:center; overflow:hidden; color:white; background-size:cover; background-position:center; text-align:center; }
+.dashboard-event-image img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.dashboard-event-image::after { content:""; position:absolute; inset:0; background:linear-gradient(rgba(8,40,59,.08),rgba(8,40,59,.35)); }
+.dashboard-event-image strong { position:relative; z-index:2; font-family:"Barlow Condensed",sans-serif; font-size:18px; line-height:.9; text-transform:uppercase; }
+.dashboard-card-actions { position:absolute; z-index:3; top:5px; right:8px; font-size:9px; }
+.surf-image { background-image:url("https://upsa.ph/wp-content/uploads/2025/07/UPSA-Website-Event-Banner.png"); }
+.harok-image { background:linear-gradient(135deg,#f3eddb,#d8c89b); color:#17374b; }
+.summer-image { background:linear-gradient(135deg,#087f9d,#22bdd0); }
+.dashboard-event-card-body { padding:15px 16px 14px; }
+.dashboard-event-card-body h3 { margin:0 0 6px; color:#17374b; font-size:15px; }
+.dashboard-event-card-body p { min-height:40px; margin:0 0 10px; color:#647579; font-size:12px; line-height:1.5; }
+.dashboard-event-card-body dl { margin:0; display:grid; gap:5px; }
+.dashboard-event-card-body dl div { display:flex; gap:4px; }
+.dashboard-event-card-body dt, .dashboard-event-card-body dd { margin:0; font-size:10px; }
+.dashboard-event-card-body dt { color:#17374b; font-weight:700; }
+.dashboard-event-card-body dd { color:#79847f; }
+.dashboard-event-card-body button { min-height:34px; margin-top:10px; padding:8px 12px; border:0; color:white; background:#4a62e6; font-size:11px; text-transform:uppercase; }
+.dashboard-event-register { min-height:34px; margin-top:10px; padding:10px 12px; display:inline-block; color:white; background:#4a62e6; font-size:11px; text-decoration:none; text-transform:uppercase; }
+.dashboard-data-empty { grid-column:1/-1; margin:0; padding:18px; color:#52646a; background:#fff; font-size:12px; line-height:1.6; }
+.dashboard-season-title { margin:10px 0; color:#17374b; font-family:"DM Sans",sans-serif; font-size:14px; }
+.dashboard-ranking-source { margin:6px 0 10px; color:#68787b; font-size:12px; line-height:1.5; }
+.dashboard-ranking-card { margin-top:12px; border:1px solid #e0e0da; background:#fff; }
+.dashboard-ranking-card h3 { margin:0; padding:13px 16px 10px; color:#17374b; font-family:"DM Sans",sans-serif; font-size:16px; }
+.dashboard-table-tools { min-height:44px; padding:8px 16px; display:flex; justify-content:space-between; color:#52646a; font-size:11px; }
+.dashboard-table-tools select { min-height:30px; }
+.dashboard-table-tools input { min-height:30px; border:1px solid #d9ded9; }
+.dashboard-ranking-table-wrap { overflow-x:auto; }
+.dashboard-ranking-table { width:100%; min-width:720px; border-collapse:collapse; text-align:left; }
+.dashboard-ranking-table th { height:38px; padding:8px 10px; border-bottom:1px solid #e6e8e3; color:#17374b; background:#f8f8f5; font-size:11px; }
+.dashboard-ranking-table td { height:36px; padding:8px 10px; border-bottom:1px solid #ecece7; color:#52646a; font-size:11px; }
+.dashboard-page-title { margin:0 0 20px; }
+.dashboard-account-tabs { margin-bottom:16px; display:flex; gap:8px; }
+.dashboard-account-tabs button { min-height:38px; padding:8px 18px; border:0; color:#52646a; background:#e7e7df; font-size:11px; text-transform:uppercase; }
+.dashboard-account-tabs button.active { color:white; background:#3e56dd; }
+.athlete-dashboard-main .member-editor { margin:0; }
+.athlete-dashboard-main .member-editor-toolbar { display:none; }
+.athlete-dashboard-main .member-profile-form { margin-top:0; }
+.athlete-dashboard-main .member-account-notice { position:relative; z-index:2; }
+.athlete-dashboard-main > .member-auth-panel { max-width:680px; margin:20px auto 0; }
+.athlete-dashboard-main > .member-auth-panel[hidden] { display:none; }
+.athlete-dashboard-main > .member-account-setup[hidden] { display:none; }
+@media (min-width:761px) and (max-width:1100px) {
+  .athlete-dashboard-main { padding:24px; }
+  .dashboard-event-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
 @media (max-width:760px) {
+  .athlete-dashboard-app { grid-template-columns:58px minmax(0,1fr); grid-template-rows:58px minmax(0,1fr); }
+  .athlete-dashboard-header { height:58px; padding:0 14px 0 10px; }
+  .athlete-dashboard-brand svg { width:34px; height:34px; }
+  .athlete-dashboard-sidebar { top:58px; height:calc(100vh - 58px); padding:10px 5px; }
+  .dashboard-nav-item { justify-content:center; padding:8px 4px; font-size:0; }
+  .dashboard-nav-item span { width:auto; font-size:16px; }
+  .dashboard-upgrade { margin:0; padding:5px 2px; }
+  .dashboard-upgrade p { display:none; }
+  .dashboard-upgrade a { min-height:44px; padding:4px 1px; flex-direction:column; gap:2px; font-size:8px; }
+  .dashboard-upgrade a span { font-size:12px; }
+  .athlete-dashboard-main { padding:16px 12px 35px; }
+  .dashboard-welcome { padding:14px; }
+  .dashboard-progress { display:none; }
+  .dashboard-event-grid { grid-template-columns:1fr; }
+  .dashboard-event-image { height:120px; }
+  .dashboard-table-tools { gap:10px; }
+  .athlete-dashboard-brand b { display:none; }
   .member-auth-grid, .member-form-grid, .member-public-details { grid-template-columns:1fr; }
   .member-form-wide, .member-public-toggle { grid-column:auto; }
   .member-editor-toolbar { align-items:flex-start; flex-direction:column; }
@@ -1122,33 +1238,71 @@ footer div > span:first-child { margin-bottom:10px; color:var(--lime); text-tran
 @media (min-width:901px) and (max-width:1100px) {
   .site-header { padding-right:3%; padding-left:3%; }
 }
-.admin-header { position:relative; }
-.admin-body { background:#e9e9e2; }
-.admin-page { width:min(1440px,100%); min-height:80vh; margin:0 auto; padding:62px 5% 90px; }
-.admin-page-heading { margin-bottom:34px; }
-.admin-page-heading > span, .admin-section-heading > div > span, .admin-dashboard-heading > div > span, .admin-auth-panel > div > span { color:#52707b; font-family:"Barlow Condensed",sans-serif; font-size:14px; font-weight:600; letter-spacing:1.6px; text-transform:uppercase; }
-.admin-page-heading h1 { margin:10px 0; color:var(--navy); font-family:"Barlow Condensed",sans-serif; font-size:clamp(54px,7vw,86px); line-height:.9; text-transform:uppercase; }
-.admin-page-heading p, .admin-section-heading p, .admin-auth-panel p { color:#52646a; line-height:1.65; }
-.admin-panel { margin-bottom:24px; padding:clamp(20px,3vw,34px); background:#fff; }
-.admin-auth-panel { max-width:620px; }
-.admin-auth-panel h2, .admin-section-heading h2, .admin-dashboard-heading h2 { margin:8px 0; color:var(--navy); font-family:"Barlow Condensed",sans-serif; font-size:clamp(34px,4vw,48px); line-height:.95; text-transform:uppercase; }
-.admin-auth-panel .member-form { margin-top:24px; }
-.admin-auth-panel .member-form label { margin-top:8px; color:#334e5b; font-size:13px; font-weight:600; }
-.admin-auth-panel .member-form input, .admin-list-filters input, .admin-list-filters select, .admin-table select, .admin-table textarea, .admin-claim-card textarea { width:100%; min-height:44px; padding:10px 12px; border:1px solid #b8c2c1; border-radius:0; color:#102c40; background:#fff; font:14px "DM Sans",sans-serif; }
-.admin-auth-panel .member-form button, .admin-save-button, .admin-reject-button, .admin-switch-account { min-height:44px; padding:11px 16px; border:1px solid var(--navy); color:#fff; background:var(--navy); font:600 14px "DM Sans",sans-serif; cursor:pointer; }
-.admin-auth-panel .member-form button { margin-top:12px; justify-self:start; }
-.admin-save-button:hover, .admin-auth-panel .member-form button:hover { background:#143d5a; }
-.admin-auth-panel .member-form button:disabled, .admin-save-button:disabled, .admin-reject-button:disabled { opacity:.6; cursor:wait; }
-.admin-switch-account { margin-top:18px; color:var(--navy); background:transparent; }
-.admin-dashboard[hidden], .admin-auth-panel[hidden], .admin-auth-panel form[hidden], .admin-empty-state[hidden] { display:none; }
+.admin-dashboard-header { position:sticky; top:0; z-index:50; min-height:76px; padding:8px clamp(16px,5vw,72px); display:flex; align-items:center; justify-content:flex-start; gap:18px; border-bottom:1px solid #e2e2dc; background:#fff; }
+.admin-dashboard-brand { min-width:0; display:flex; align-items:center; gap:10px; color:#17374b; }
+.admin-dashboard-brand svg { width:42px; height:42px; flex:0 0 auto; }
+.admin-dashboard-brand b { max-width:175px; font-family:"Barlow Condensed",sans-serif; font-size:12px; line-height:.9; text-transform:uppercase; }
+.admin-dashboard-brand b span { display:block; color:#17374b; font-size:17px; }
+.admin-dashboard-toolbar-actions, .admin-dashboard-data-actions { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+.member-secondary-button:disabled { opacity:.6; cursor:wait; }
+.admin-body { background:#f4f4f0; }
+.admin-page { width:min(1440px,100%); min-height:80vh; margin:0 auto; padding:34px 5% 64px; }
+.admin-dashboard-layout { display:grid; grid-template-columns:220px minmax(0,1fr); align-items:stretch; gap:0; }
+.admin-sidebar { position:sticky; top:76px; height:calc(100vh - 76px); min-height:560px; padding:22px 12px 16px; display:flex; flex-direction:column; gap:22px; color:#52646a; background:#fff; border-right:1px solid #e2e2dc; }
+.admin-sidebar-user { padding:2px 8px 14px; border-bottom:1px solid #e2e2dc; }
+.admin-sidebar-user span, .admin-sidebar-tools > span { display:block; color:#718078; font-size:11px; }
+.admin-sidebar-user strong { margin-top:6px; display:block; color:#17374b; font-size:12px; overflow-wrap:anywhere; }
+.admin-sidebar-nav { display:grid; gap:6px; }
+.admin-sidebar-nav button, .admin-sidebar-tools button { width:100%; min-height:44px; padding:9px 12px; border:1px solid transparent; border-radius:6px; color:#52646a; background:transparent; font:600 13px "DM Sans",sans-serif; text-align:left; cursor:pointer; }
+.admin-sidebar-nav button:hover, .admin-sidebar-tools button:hover { background:#f0f2ed; }
+.admin-sidebar-nav button.active { color:#17374b; background:#cfd2ff; }
+.admin-sidebar-nav button:focus-visible, .admin-sidebar-tools button:focus-visible { outline:3px solid #4058df; outline-offset:2px; }
+.admin-sidebar-tools { margin-top:auto; padding-top:14px; display:grid; gap:8px; border-top:1px solid #e2e2dc; }
+.admin-sidebar-tools > span { margin:0 8px 2px; color:#52646a; font-family:"Barlow Condensed",sans-serif; font-size:14px; letter-spacing:1px; text-transform:uppercase; }
+.admin-sidebar-tools button { border-color:#d5d8d1; text-align:center; }
+.admin-sidebar-tools button.admin-sidebar-primary { border-color:#3e56dd; color:#fff; background:#3e56dd; }
+.admin-sidebar-tools button.admin-sidebar-primary:hover { background:#3048c4; }
+.admin-authenticated .admin-page { width:100%; min-height:calc(100vh - 76px); padding:0; }
+.admin-authenticated .admin-page-heading { display:none; }
+.admin-authenticated .admin-dashboard { width:100%; margin:0; }
+.admin-authenticated .admin-dashboard-layout { min-height:calc(100vh - 76px); }
+.admin-authenticated .admin-sidebar { min-height:calc(100vh - 76px); }
+.admin-authenticated .admin-workspace { padding:30px 40px 56px; }
+.admin-workspace { min-width:0; }
+.admin-view { display:none; }
+.admin-view.active { display:block; }
+.admin-page-heading { margin-bottom:26px; }
+.admin-page-heading > span, .admin-section-heading > div > span, .admin-dashboard-heading > div > span { color:#52707b; font-family:"Barlow Condensed",sans-serif; font-size:14px; font-weight:600; letter-spacing:1.6px; text-transform:uppercase; }
+.admin-page-heading h1 { margin:10px 0; color:var(--navy); font-family:"Barlow Condensed",sans-serif; font-size:clamp(38px,4.5vw,60px); line-height:.95; text-transform:uppercase; }
+.admin-page-heading p, .admin-section-heading p { color:#52646a; line-height:1.65; }
+.admin-panel { margin-bottom:24px; padding:24px; background:#fff; }
+.admin-section-heading h2, .admin-dashboard-heading h2 { margin:8px 0; color:#17374b; font-family:"DM Sans",sans-serif; font-size:21px; font-weight:600; line-height:1.3; }
+.admin-list-filters input, .admin-list-filters select, .admin-table select, .admin-table textarea, .admin-claim-card textarea { width:100%; min-height:44px; padding:10px 12px; border:1px solid #b8c2c1; border-radius:0; color:#102c40; background:#fff; font:14px "DM Sans",sans-serif; }
+.admin-save-button, .admin-reject-button { min-height:44px; padding:11px 16px; border:1px solid var(--navy); color:#fff; background:var(--navy); font:600 14px "DM Sans",sans-serif; cursor:pointer; }
+.admin-save-button:hover { background:#143d5a; }
+.admin-save-button:disabled, .admin-reject-button:disabled { opacity:.6; cursor:wait; }
+.admin-dashboard[hidden], .admin-empty-state[hidden] { display:none; }
 .admin-dashboard-heading, .admin-section-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:20px; }
-.admin-dashboard-heading { margin-bottom:26px; }
-.admin-dashboard-heading p { color:#52646a; font-size:14px; }
+.admin-dashboard-heading { min-height:104px; margin-bottom:22px; padding:20px 24px; border:1px solid #e0e0da; background:#fff; }
+.admin-dashboard-heading p { margin:0; color:#647579; font-size:13px; line-height:1.55; }
 .admin-dashboard-heading .member-secondary-button, .admin-section-heading .member-secondary-button { flex:0 0 auto; }
 .admin-summary-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:24px; }
-.admin-summary-grid article { min-height:112px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; color:#fff; background:var(--navy); }
-.admin-summary-grid span { color:#d5dfe4; font-size:12px; }
-.admin-summary-grid strong { color:var(--lime); font-family:"Barlow Condensed",sans-serif; font-size:38px; line-height:1; }
+.admin-summary-grid article { min-height:112px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; color:#52646a; border:1px solid #e0e0da; background:#fff; }
+.admin-summary-grid span { color:#647579; font-size:12px; }
+.admin-summary-grid strong { color:#17374b; font-family:"Barlow Condensed",sans-serif; font-size:38px; line-height:1; }
+.admin-dashboard-data-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:20px 0; }
+.admin-dashboard-data-stats article { min-width:0; padding:14px; display:flex; flex-direction:column; gap:8px; background:#f3f1eb; }
+.admin-dashboard-data-stats span { color:#52646a; font-size:12px; }
+.admin-dashboard-data-stats strong { color:var(--navy); font-family:"Barlow Condensed",sans-serif; font-size:24px; overflow-wrap:anywhere; }
+.admin-dashboard-data-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+.admin-dashboard-data-grid h3 { margin:0 0 10px; color:var(--navy); font-family:"Barlow Condensed",sans-serif; font-size:22px; text-transform:uppercase; }
+.admin-dashboard-data-list { display:grid; gap:8px; }
+.admin-dashboard-data-item { min-width:0; padding:12px 14px; background:#f3f1eb; }
+.admin-dashboard-data-item strong { color:#17374b; font-size:13px; }
+.admin-dashboard-data-item ol { margin:8px 0 0; padding-left:20px; color:#52646a; font-size:12px; line-height:1.7; }
+.admin-dashboard-data-item p, .admin-dashboard-data-empty { margin:6px 0 0; color:#52646a; font-size:12px; line-height:1.55; overflow-wrap:anywhere; }
+.admin-dashboard-data-empty { padding:12px 14px; background:#f3f1eb; }
+#admin-dashboard-data-status { min-height:1.5em; margin:14px 0; color:#52646a; font-size:13px; line-height:1.5; }
 .admin-section-heading { margin-bottom:22px; }
 .admin-section-heading p { max-width:780px; margin:8px 0 0; font-size:13px; }
 .admin-list-filters { display:grid; grid-template-columns:auto minmax(160px,.5fr) auto minmax(220px,1fr); align-items:center; gap:10px 14px; margin-bottom:18px; }
@@ -1189,9 +1343,21 @@ footer div > span:first-child { margin-bottom:10px; color:var(--lime); text-tran
 .admin-privacy-note { max-width:850px; color:#52646a; font-size:12px; line-height:1.6; }
 @media (max-width:760px) {
   .admin-page { padding:38px 5% 60px; }
+  .admin-dashboard-brand b { display:none; }
+  .admin-dashboard-layout { grid-template-columns:1fr; }
+  .admin-sidebar { position:static; min-height:0; }
+  .admin-authenticated .admin-dashboard-layout { grid-template-columns:1fr; min-height:0; }
+  .admin-authenticated .admin-sidebar { position:static; height:auto; min-height:0; border-right:0; border-bottom:1px solid #e2e2dc; }
+  .admin-authenticated .admin-workspace { padding:16px 12px 35px; }
+  .admin-authenticated .admin-panel { padding:16px; }
+  .admin-sidebar-nav { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .admin-sidebar-tools { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .admin-sidebar-tools > span { grid-column:1/-1; }
   .admin-summary-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .admin-dashboard-heading, .admin-section-heading { flex-direction:column; align-items:stretch; }
   .admin-dashboard-heading .member-secondary-button, .admin-section-heading .member-secondary-button { align-self:flex-start; }
+  .admin-dashboard-toolbar-actions, .admin-dashboard-data-actions { align-items:flex-start; }
+  .admin-dashboard-data-stats, .admin-dashboard-data-grid { grid-template-columns:1fr; }
   .admin-list-filters { grid-template-columns:1fr; }
   .admin-claim-list { grid-template-columns:1fr; }
   .brand { width:180px; }
@@ -1202,4 +1368,13 @@ footer div > span:first-child { margin-bottom:10px; color:var(--lime); text-tran
   .desktop-nav > a, .nav-dropdown > a { white-space:nowrap; }
   .partner-link { white-space:nowrap; font-size:clamp(12px,1.15vw,13px); letter-spacing:.4px; }
   .partner-link span { margin-left:7px; }
+}
+@media (min-width:761px) and (max-width:1100px) {
+  .admin-authenticated .admin-workspace { padding:24px; }
+}
+@media (max-width:480px) {
+  .admin-dashboard-header { min-height:60px; padding:6px 12px; }
+  .admin-page { padding:30px 12px 50px; }
+  .admin-sidebar-nav, .admin-sidebar-tools { grid-template-columns:1fr; }
+  .admin-sidebar-tools > span { grid-column:auto; }
 }

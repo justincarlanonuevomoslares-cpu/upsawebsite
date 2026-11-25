@@ -1,5 +1,6 @@
 import { supabase } from './supabase/client.js';
 import { countries, getCountryFlag, getCountryName } from './countries.js';
+import { loadDashboardContent } from './dashboard-data.js';
 
 const siteRoot = new URL('./', import.meta.url);
 const notice = document.querySelector('#account-notice');
@@ -46,6 +47,152 @@ const previewObjectUrls = new Map();
 let currentUser = null;
 let linkedAthleteProfile = null;
 let currentProfile = null;
+
+const dashboardNavItems = [...document.querySelectorAll('[data-dashboard-view]')];
+const dashboardPanels = [...document.querySelectorAll('[data-dashboard-panel]')];
+const searchToggle = document.querySelector('#dashboard-search-toggle');
+const searchPopover = document.querySelector('#dashboard-search-popover');
+const searchForm = document.querySelector('#dashboard-search-popover');
+const searchInput = document.querySelector('#dashboard-search-input');
+const searchStatus = document.querySelector('#dashboard-search-status');
+const notificationsToggle = document.querySelector('#dashboard-notifications-toggle');
+const notificationsPopover = document.querySelector('#dashboard-notifications-popover');
+const avatarToggle = document.querySelector('#dashboard-avatar');
+const accountPopover = document.querySelector('#dashboard-account-popover');
+const dashboardPopovers = [searchPopover, notificationsPopover, accountPopover];
+
+const closeDashboardPopovers = () => {
+  dashboardPopovers.forEach(popover => {
+    popover.hidden = true;
+  });
+  [searchToggle, notificationsToggle, avatarToggle].forEach(toggle => {
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+};
+
+const toggleDashboardPopover = (toggle, popover) => {
+  const shouldOpen = popover.hidden;
+  closeDashboardPopovers();
+  if (!shouldOpen) return;
+  popover.hidden = false;
+  toggle.setAttribute('aria-expanded', 'true');
+  if (popover === searchPopover) searchInput.focus();
+};
+
+const redirectToSignIn = () => {
+  window.location.href = new URL('membership/signin.html', siteRoot).href;
+};
+
+const filterDashboardResults = query => {
+  const normalizedQuery = query.toLowerCase();
+  const eventCards = [...document.querySelectorAll('.dashboard-event-card')];
+  const rankingRows = [...document.querySelectorAll('.dashboard-ranking-table tbody tr')];
+  const eventMatches = eventCards.filter(card => card.textContent.toLowerCase().includes(normalizedQuery));
+  const rankingMatches = rankingRows.filter(row => row.textContent.toLowerCase().includes(normalizedQuery));
+  const uniqueEventMatches = new Set(eventMatches.map(card =>
+    card.querySelector('h3')?.textContent.trim() || card.textContent.trim()
+  ));
+  const uniqueRankingMatches = new Set(rankingMatches.map(row => row.textContent.trim()));
+
+  eventCards.forEach(card => {
+    card.hidden = !eventMatches.includes(card);
+  });
+  rankingRows.forEach(row => {
+    row.hidden = !rankingMatches.includes(row);
+  });
+
+  if (!normalizedQuery) {
+    eventCards.forEach(card => {
+      card.hidden = false;
+    });
+    rankingRows.forEach(row => {
+      row.hidden = false;
+    });
+    setDashboardView('dashboard');
+    searchStatus.textContent = 'Enter a name, event, or ranking to search.';
+    return;
+  }
+
+  const resultCount = uniqueEventMatches.size + uniqueRankingMatches.size;
+  setDashboardView(uniqueEventMatches.size && uniqueRankingMatches.size
+    ? 'dashboard'
+    : uniqueEventMatches.size
+      ? 'events'
+      : 'rankings');
+  searchStatus.textContent = resultCount
+    ? `${resultCount} matching ${uniqueEventMatches.size && uniqueRankingMatches.size ? 'events and ranking entries' : uniqueEventMatches.size ? 'events' : 'ranking entries'}.`
+    : `No events or ranking entries matched “${query}”.`;
+};
+
+searchToggle.addEventListener('click', () => {
+  if (!currentUser) {
+    redirectToSignIn();
+    return;
+  }
+  toggleDashboardPopover(searchToggle, searchPopover);
+});
+
+searchForm.addEventListener('submit', event => {
+  event.preventDefault();
+  filterDashboardResults(searchInput.value.trim());
+});
+
+notificationsToggle.addEventListener('click', () => {
+  if (!currentUser) {
+    redirectToSignIn();
+    return;
+  }
+  toggleDashboardPopover(notificationsToggle, notificationsPopover);
+});
+
+avatarToggle.addEventListener('click', () => {
+  if (!currentUser) {
+    redirectToSignIn();
+    return;
+  }
+  toggleDashboardPopover(avatarToggle, accountPopover);
+});
+
+document.querySelector('#dashboard-open-account').addEventListener('click', () => {
+  closeDashboardPopovers();
+  setDashboardView('account');
+  document.querySelector('#profile-username').focus();
+});
+
+document.querySelector('#dashboard-signout').addEventListener('click', async () => {
+  closeDashboardPopovers();
+  await signOutToHome();
+});
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('.athlete-dashboard-actions')) closeDashboardPopovers();
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && dashboardPopovers.some(popover => !popover.hidden)) {
+    closeDashboardPopovers();
+  }
+});
+
+const setDashboardView = view => {
+  dashboardNavItems.forEach(item => {
+    item.classList.toggle('active', item.dataset.dashboardView === view);
+  });
+  dashboardPanels.forEach(panel => {
+    panel.classList.toggle('active', panel.dataset.dashboardPanel === view);
+  });
+};
+
+dashboardNavItems.forEach(item => {
+  item.addEventListener('click', () => setDashboardView(item.dataset.dashboardView));
+});
+
+document.querySelectorAll('[data-open-dashboard-view]').forEach(link => {
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    setDashboardView(link.dataset.openDashboardView);
+  });
+});
 
 countries.forEach(({ code, name }) => {
   const option = document.createElement('option');
@@ -114,12 +261,14 @@ Object.entries(photoControls).forEach(([kind, control]) => {
 });
 
 const setMembershipAccess = hasAccountSession => {
-  membershipArea.hidden = !hasAccountSession;
-  membershipAvailabilityNotice.hidden = false;
-  membershipBannerLink.href = hasAccountSession ? '#membership-plans' : 'signup.html';
-  membershipBannerLink.textContent = hasAccountSession ? 'Explore membership ↘' : 'Join UPSA ↗';
-  membershipGuestActions.hidden = hasAccountSession;
-  membershipMemberActions.hidden = !hasAccountSession;
+  if (membershipArea) membershipArea.hidden = !hasAccountSession;
+  if (membershipAvailabilityNotice) membershipAvailabilityNotice.hidden = false;
+  if (membershipBannerLink) {
+    membershipBannerLink.href = hasAccountSession ? '#membership-plans' : 'signup.html';
+    membershipBannerLink.textContent = hasAccountSession ? 'Explore membership ↘' : 'Join UPSA ↗';
+  }
+  if (membershipGuestActions) membershipGuestActions.hidden = hasAccountSession;
+  if (membershipMemberActions) membershipMemberActions.hidden = !hasAccountSession;
   if (hasAccountSession) {
     window.dispatchEvent(new Event('upsa:membership-access-granted'));
   }
@@ -129,6 +278,203 @@ const showNotice = (message, kind = 'info') => {
   notice.textContent = message;
   notice.className = `member-account-notice ${kind}`;
   notice.hidden = false;
+};
+
+const signOutToHome = async () => {
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw new Error(error.message);
+    window.location.replace(new URL('index.html', siteRoot).href);
+  } catch (error) {
+    showNotice(`Could not sign out: ${error instanceof Error ? error.message : String(error)}`, 'error');
+  }
+};
+
+const createDashboardEmptyState = message => {
+  const empty = document.createElement('p');
+  empty.className = 'dashboard-data-empty';
+  empty.textContent = message;
+  return empty;
+};
+
+const safeExternalUrl = value => {
+  if (!value) return '';
+  try {
+    const url = new URL(value);
+    return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+  } catch {
+    return '';
+  }
+};
+
+const formatDashboardDate = value => {
+  if (!value) return 'Date to be announced';
+  const date = new Date(`${value}T00:00:00`);
+  return Number.isNaN(date.getTime())
+    ? value
+    : date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+};
+
+const renderDashboardEvent = event => {
+  const card = document.createElement('article');
+  card.className = 'dashboard-event-card';
+  const image = document.createElement('div');
+  image.className = 'dashboard-event-image';
+  const imageUrl = safeExternalUrl(event.featured_image_path);
+  if (imageUrl) {
+    const photo = document.createElement('img');
+    photo.src = imageUrl;
+    photo.alt = '';
+    photo.loading = 'lazy';
+    image.append(photo);
+  }
+  const title = document.createElement('strong');
+  title.textContent = event.name;
+  image.append(title);
+
+  const body = document.createElement('div');
+  body.className = 'dashboard-event-card-body';
+  const heading = document.createElement('h3');
+  heading.textContent = event.name;
+  const description = document.createElement('p');
+  description.textContent = event.description || event.category || 'UPSA event';
+  const details = document.createElement('dl');
+  [
+    ['Date', `${formatDashboardDate(event.start_date)}${event.end_date && event.end_date !== event.start_date ? ` – ${formatDashboardDate(event.end_date)}` : ''}`],
+    ['Location', event.location || 'To be announced']
+  ].forEach(([label, value]) => {
+    const row = document.createElement('div');
+    const term = document.createElement('dt');
+    term.textContent = `${label}:`;
+    const detail = document.createElement('dd');
+    detail.textContent = value;
+    row.append(term, detail);
+    details.append(row);
+  });
+  body.append(heading, description, details);
+
+  const externalUrl = safeExternalUrl(event.external_url);
+  if (externalUrl) {
+    const link = document.createElement('a');
+    link.className = 'dashboard-event-register';
+    link.href = externalUrl;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'Event details';
+    body.append(link);
+  }
+  card.append(image, body);
+  return card;
+};
+
+const renderDashboardEvents = (container, events, emptyMessage) => {
+  container.replaceChildren(...(
+    events.length ? events.map(renderDashboardEvent) : [createDashboardEmptyState(emptyMessage)]
+  ));
+};
+
+const renderRankingCategory = (category, rowLimit) => {
+  const card = document.createElement('article');
+  card.className = 'dashboard-ranking-card';
+  const heading = document.createElement('h3');
+  heading.textContent = category.title;
+  const tableWrap = document.createElement('div');
+  tableWrap.className = 'dashboard-ranking-table-wrap';
+  const table = document.createElement('table');
+  table.className = 'dashboard-ranking-table';
+  const tableHead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  const headers = category.headers.length ? category.headers : ['Rank', 'Name'];
+  headers.forEach(header => {
+    const cell = document.createElement('th');
+    cell.scope = 'col';
+    cell.textContent = header;
+    headerRow.append(cell);
+  });
+  tableHead.append(headerRow);
+  const tableBody = document.createElement('tbody');
+  category.rows.slice(0, rowLimit).forEach(values => {
+    const row = document.createElement('tr');
+    headers.forEach((_, index) => {
+      const cell = document.createElement('td');
+      cell.textContent = values[index] == null || values[index] === '' ? '—' : String(values[index]);
+      row.append(cell);
+    });
+    tableBody.append(row);
+  });
+  table.append(tableHead, tableBody);
+  tableWrap.append(table);
+  card.append(heading, tableWrap);
+  return card;
+};
+
+const renderDashboardRankings = (container, categories, rowLimit, emptyMessage) => {
+  container.replaceChildren(...(
+    categories.length
+      ? categories.map(category => renderRankingCategory(category, rowLimit))
+      : [createDashboardEmptyState(emptyMessage)]
+  ));
+};
+
+const getLatestLocalRankings = () => {
+  if (!Array.isArray(window.upsaRankings)) return null;
+  return window.upsaRankings.reduce((latest, season) =>
+    !latest || Number(season.year) > Number(latest.year) ? season : latest
+  , null);
+};
+
+const renderDashboardContent = async () => {
+  const homeEvents = document.querySelector('#dashboard-home-events');
+  const allEvents = document.querySelector('#dashboard-all-events');
+  const homeRankings = document.querySelector('#dashboard-home-rankings');
+  const allRankings = document.querySelector('#dashboard-all-rankings');
+  const homeSeason = document.querySelector('#dashboard-home-season');
+  const homeSource = document.querySelector('#dashboard-home-ranking-source');
+  const allSource = document.querySelector('#dashboard-all-ranking-source');
+  const rankingTitle = document.querySelector('#dashboard-rankings-title');
+  let content = { season: null, categories: [], events: [] };
+  let dashboardError = '';
+
+  try {
+    content = await loadDashboardContent(supabase);
+  } catch (error) {
+    dashboardError = error instanceof Error ? error.message : String(error);
+  }
+
+  const localRankings = getLatestLocalRankings();
+  const useLocalRankings = Boolean(localRankings && (
+    !content.season
+    || !content.categories.length
+    || Number(localRankings.year) > Number(content.season.year)
+  ));
+  const season = useLocalRankings ? localRankings : content.season;
+  const categories = useLocalRankings ? localRankings.categories : content.categories;
+  const eventMessage = dashboardError
+    ? 'Published events could not be loaded. Please try again later.'
+    : 'No published upcoming events are available yet.';
+  renderDashboardEvents(homeEvents, dashboardError ? [] : content.events.slice(0, 3), eventMessage);
+  renderDashboardEvents(allEvents, dashboardError ? [] : content.events, eventMessage);
+  document.querySelector('#dashboard-upcoming-event-count').textContent = String(
+    dashboardError ? 0 : content.events.length
+  );
+
+  const seasonTitle = season?.title || 'Official rankings';
+  homeSeason.textContent = seasonTitle;
+  rankingTitle.textContent = seasonTitle;
+  const sourceMessage = useLocalRankings
+    ? `Showing the latest official rankings bundled with this site (${season.year}); Supabase has not been synced to this season yet.`
+    : season
+      ? 'Rankings loaded from Supabase.'
+      : 'Official rankings have not been synced yet.';
+  homeSource.textContent = sourceMessage;
+  allSource.textContent = sourceMessage;
+  const rankingMessage = dashboardError
+    ? 'Rankings could not be loaded from Supabase or the local site source.'
+    : 'Official rankings have not been synced yet.';
+  renderDashboardRankings(homeRankings, categories || [], 3, rankingMessage);
+  renderDashboardRankings(allRankings, categories || [], 1000, rankingMessage);
+
+  return dashboardError ? ` Dashboard content could not be loaded: ${dashboardError}` : '';
 };
 
 const getErrorMessage = error => {
@@ -204,6 +550,17 @@ const updatePublicProfileLink = username => {
 
 const setFormValues = profile => {
   currentProfile = profile;
+  const displayName = String(profile.display_name || 'John').trim();
+  const firstName = displayName.split(/\s+/)[0] || 'John';
+  const welcomeName = document.querySelector('#dashboard-welcome-name');
+  const avatar = document.querySelector('#dashboard-avatar');
+  if (welcomeName) {
+    const celebration = document.createElement('span');
+    celebration.setAttribute('aria-hidden', 'true');
+    celebration.textContent = '🎉';
+    welcomeName.replaceChildren(document.createTextNode(`Hey ${firstName}! `), celebration);
+  }
+  if (avatar) avatar.textContent = firstName.charAt(0).toUpperCase();
   profileForm.elements.username.value = profile.username;
   profileForm.elements.display_name.value = profile.display_name;
   nationalitySelect.value = profile.nationality || '';
@@ -233,6 +590,22 @@ const renderAthleteLink = (link, claim) => {
   linkedAthleteProfile = link;
   updatePublicProfileLink(profileForm.elements.username.value);
   athleteClaimForm.hidden = Boolean(link) || claim?.status === 'pending' || claim?.status === 'approved';
+  const notificationMessage = document.querySelector('#dashboard-notification-message');
+  const notificationsToggle = document.querySelector('#dashboard-notifications-toggle');
+  if (link) {
+    notificationMessage.textContent = 'Your UPSA athlete profile is connected to the official rankings.';
+  } else if (claim?.status === 'pending') {
+    notificationMessage.textContent = `Your Athlete ID request (${claim.source_athlete_id}) is awaiting UPSA review.`;
+  } else if (claim?.status === 'approved') {
+    notificationMessage.textContent = 'Your Athlete ID request was approved and is being finalized.';
+  } else if (claim?.status === 'rejected') {
+    notificationMessage.textContent = 'Your Athlete ID request needs attention. Check Account for the review details.';
+  } else {
+    notificationMessage.textContent = 'You’re all caught up.';
+  }
+  notificationsToggle.dataset.hasNotifications = String(
+    ['pending', 'approved', 'rejected'].includes(claim?.status)
+  );
 
   if (link) {
     athleteLinkStatus.append(document.createTextNode('Your account is connected to the verified UPSA athlete profile. '));
@@ -305,6 +678,9 @@ const loadAccount = async user => {
   loadErrorPanel.hidden = true;
   editor.hidden = false;
   authPanel.hidden = true;
+  document.querySelector('#dashboard-account-email').textContent = user.email || '';
+  searchInput.value = '';
+  filterDashboardResults('');
   showNotice('Loading your profile…');
 
   const [
@@ -337,22 +713,27 @@ const loadAccount = async user => {
   setFormValues(profile);
   renderAthleteLink(athleteLinks, claims[0] || null);
   renderReels(reels);
-  adminDashboardLink.hidden = Boolean(adminRoleError) || isAdmin !== true;
+  if (adminDashboardLink) adminDashboardLink.hidden = Boolean(adminRoleError) || isAdmin !== true;
+  const dashboardDataError = await renderDashboardContent();
   showNotice(
-    adminRoleError
-      ? `Signed in as ${user.email}. Admin access could not be checked: ${adminRoleError.message}`
-      : `Signed in as ${user.email}.`,
-    adminRoleError ? 'error' : 'success'
+    `Signed in as ${user.email}.${adminRoleError
+      ? ` Admin access could not be checked: ${adminRoleError.message}`
+      : ''}${dashboardDataError}`,
+    adminRoleError || dashboardDataError ? 'error' : 'success'
   );
 };
 
 const showSignedOut = () => {
   currentUser = null;
-  adminDashboardLink.hidden = true;
+  closeDashboardPopovers();
+  document.querySelector('#dashboard-account-email').textContent = '';
+  if (adminDashboardLink) adminDashboardLink.hidden = true;
   setMembershipAccess(false);
   loadErrorPanel.hidden = true;
   editor.hidden = true;
   authPanel.hidden = false;
+  dashboardPanels.forEach(panel => panel.classList.remove('active'));
+  dashboardNavItems.forEach(item => item.classList.remove('active'));
 };
 
 const showProfileLoadError = error => {
@@ -583,13 +964,11 @@ if (!supabase) {
   });
 
   document.querySelector('#signout-button').addEventListener('click', async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) showNotice(`Could not sign out: ${error.message}`, 'error');
+    await signOutToHome();
   });
 
   document.querySelector('#profile-load-signout').addEventListener('click', async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) showNotice(`Could not sign out: ${error.message}`, 'error');
+    await signOutToHome();
   });
 
   supabase.auth.onAuthStateChange((_event, session) => {
