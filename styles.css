@@ -140,7 +140,7 @@ img { display:block; width:100%; }
 .home-signin-trigger { padding:11px 18px; border:1px solid rgba(255,255,255,.75); color:white; background:transparent; font:600 14px "Barlow Condensed",sans-serif; letter-spacing:.8px; text-transform:uppercase; cursor:pointer; }
 .home-signin-trigger:hover { color:var(--navy); background:white; }
 .home-signin-trigger:focus-visible, .floating-partner-link:focus-visible, .home-signin-close:focus-visible { outline:3px solid var(--lime); outline-offset:3px; }
-.floating-partner-link { position:fixed; z-index:19; right:28px; bottom:28px; padding:15px 20px; display:inline-flex; align-items:center; gap:24px; color:var(--navy); background:var(--lime); box-shadow:0 8px 26px rgba(0,0,0,.24); font-family:"Barlow Condensed",sans-serif; font-size:16px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; transition:transform .2s ease,background .2s ease; }
+.floating-partner-link { position:fixed; z-index:19; left:28px; bottom:28px; padding:15px 20px; display:inline-flex; align-items:center; gap:24px; color:var(--navy); background:var(--lime); box-shadow:0 8px 26px rgba(0,0,0,.24); font-family:"Barlow Condensed",sans-serif; font-size:16px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; transition:transform .2s ease,background .2s ease; }
 .floating-partner-link:hover { transform:translateY(-3px); background:#e0ed89; }
 .home-signin-dialog { width:min(440px,calc(100% - 32px)); max-width:none; padding:0; border:0; color:#102c40; background:#e9e8e2; box-shadow:0 24px 80px rgba(0,0,0,.35); }
 .home-signin-dialog::backdrop { background:rgba(5,20,30,.68); -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
@@ -678,7 +678,7 @@ footer div > span:first-child { margin-bottom:10px; color:var(--lime); text-tran
   footer { grid-template-columns:2fr 1fr 1fr; }
 }
 @media (max-width:600px) {
-  .floating-partner-link { right:16px; bottom:16px; padding:13px 16px; font-size:14px; }
+  .floating-partner-link { left:16px; bottom:16px; padding:13px 16px; font-size:14px; }
   .home-signin-dialog .member-form { padding:32px 24px 26px; }
   .membership-hero h1 { font-size:58px; }
   .membership-hero p { font-size:17px; }

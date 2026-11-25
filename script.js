@@ -5,6 +5,55 @@ const brandUrl = brandLink
   ? new URL(brandLink.getAttribute('href'), document.baseURI)
   : new URL('index.html', document.baseURI);
 const siteRoot = new URL('.', brandUrl);
+const header = document.querySelector('.site-header');
+let signInButton = document.querySelector('.home-signin-trigger');
+const headerPartnerLink = header?.querySelector('.partner-link');
+
+if (headerPartnerLink) {
+  signInButton = document.createElement('button');
+  signInButton.className = 'home-signin-trigger';
+  signInButton.type = 'button';
+  signInButton.setAttribute('aria-haspopup', 'dialog');
+  signInButton.setAttribute('aria-controls', 'home-signin-dialog');
+  signInButton.textContent = 'Sign in';
+  headerPartnerLink.replaceWith(signInButton);
+}
+
+if (!signInButton && header) {
+  signInButton = document.createElement('button');
+  signInButton.className = 'home-signin-trigger';
+  signInButton.type = 'button';
+  signInButton.setAttribute('aria-haspopup', 'dialog');
+  signInButton.setAttribute('aria-controls', 'home-signin-dialog');
+  signInButton.textContent = 'Sign in';
+  header.insertBefore(signInButton, menuButton);
+}
+
+if (!document.querySelector('.floating-partner-link')) {
+  const partnerButton = document.createElement('a');
+  partnerButton.className = 'floating-partner-link';
+  partnerButton.href = document.querySelector('#contact')
+    ? '#contact'
+    : new URL('contact.html', siteRoot).href;
+  partnerButton.innerHTML = 'Become a partner <span>↗</span>';
+  document.body.append(partnerButton);
+}
+
+const loadSignInModule = () => {
+  import(new URL('home-signin.js', siteRoot).href)
+    .catch(error => console.error('Could not load the sign-in dialog.', error));
+};
+
+if (window.UPSA_SUPABASE_CONFIG) {
+  loadSignInModule();
+} else {
+  const configScript = document.createElement('script');
+  configScript.src = new URL('supabase/config.js', siteRoot).href;
+  configScript.addEventListener('load', loadSignInModule, { once: true });
+  configScript.addEventListener('error', loadSignInModule, { once: true });
+  document.head.append(configScript);
+}
+
 const athleteDirectoryUrl = new URL('athletes.html', siteRoot);
 let athleteNavigationLink = navigation.querySelector('[data-athletes-nav]');
 
