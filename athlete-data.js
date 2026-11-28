@@ -1,4 +1,4 @@
-(() => {
+window.upsaAthleteDataReady = window.upsaRankingsReady.then(() => {
   const rankingYears = window.upsaRankings;
   if (!Array.isArray(rankingYears)) {
     throw new Error('UPSA rankings data must load before athlete data.');
@@ -51,9 +51,9 @@
   rankingYears.forEach(year => {
     year.categories.forEach((category, categoryIndex) => {
       const nameIndex = category.headers.findIndex(header => /^name$/i.test(header));
-      const rankIndex = category.headers.findIndex(header => /^rank$/i.test(header));
-      const idIndex = category.headers.findIndex(header => /^athlete\s*id$/i.test(header));
-      const totalPointsIndex = category.headers.findIndex(header => /^total points/i.test(header));
+      const rankIndex = category.headers.findIndex(header => /^(?:overall\s+)?rank$/i.test(header));
+      const idIndex = category.headers.findIndex(header => /^(?:athlete|surfer)\s*id$/i.test(header));
+      const totalPointsIndex = category.headers.findIndex(header => /^(?:total|overall)\s+points/i.test(header));
       const legIndexes = category.headers
         .map((header, index) => ({ header, index }))
         .filter(item => /^leg\s+\d+$/i.test(item.header));
@@ -225,4 +225,4 @@
       return profileUrl.href;
     }
   };
-})();
+});

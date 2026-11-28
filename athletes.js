@@ -40,6 +40,7 @@ const isCategoryPage = Boolean(
 );
 
 if (isDirectoryPage || isCategoryPage) {
+  await Promise.all([window.upsaRankingsReady, window.upsaAthleteDataReady]);
   const rankingYears = window.upsaRankings;
   const athleteData = window.upsaAthleteData;
   if (!Array.isArray(rankingYears) || !athleteData) {

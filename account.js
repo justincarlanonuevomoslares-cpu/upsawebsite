@@ -416,9 +416,9 @@ const renderDashboardRankings = (container, categories, rowLimit, emptyMessage) 
   ));
 };
 
-const getLatestLocalRankings = () => {
-  if (!Array.isArray(window.upsaRankings)) return null;
-  return window.upsaRankings.reduce((latest, season) =>
+const getLatestLocalRankings = seasons => {
+  if (!Array.isArray(seasons)) return null;
+  return seasons.reduce((latest, season) =>
     !latest || Number(season.year) > Number(latest.year) ? season : latest
   , null);
 };
@@ -441,7 +441,13 @@ const renderDashboardContent = async () => {
     dashboardError = error instanceof Error ? error.message : String(error);
   }
 
-  const localRankings = getLatestLocalRankings();
+  let localRankings = null;
+  let localRankingsError = '';
+  try {
+    localRankings = getLatestLocalRankings(await window.upsaRankingsReady);
+  } catch (error) {
+    localRankingsError = error instanceof Error ? error.message : String(error);
+  }
   const useLocalRankings = Boolean(localRankings && (
     !content.season
     || !content.categories.length
@@ -462,13 +468,13 @@ const renderDashboardContent = async () => {
   homeSeason.textContent = seasonTitle;
   rankingTitle.textContent = seasonTitle;
   const sourceMessage = useLocalRankings
-    ? `Showing the latest official rankings bundled with this site (${season.year}); Supabase has not been synced to this season yet.`
+    ? `Showing the latest official rankings loaded from the ${season.year} Excel workbook; Supabase has not been synced to this season yet.`
     : season
       ? 'Rankings loaded from Supabase.'
       : 'Official rankings have not been synced yet.';
   homeSource.textContent = sourceMessage;
   allSource.textContent = sourceMessage;
-  const rankingMessage = dashboardError
+  const rankingMessage = dashboardError || localRankingsError
     ? 'Rankings could not be loaded from Supabase or the local site source.'
     : 'Official rankings have not been synced yet.';
   renderDashboardRankings(homeRankings, categories || [], 3, rankingMessage);

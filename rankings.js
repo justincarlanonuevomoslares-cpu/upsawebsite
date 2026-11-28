@@ -1,3 +1,4 @@
+window.upsaRankingsReady.then(() => {
 const rankingPage = document.querySelector('[data-ranking-year]');
 
 if (rankingPage) {
@@ -344,3 +345,13 @@ if (rankingPage) {
   inquiry.replaceChildren('For any inquiries regarding the rankings, please contact us on ', facebook, ' and ', instagram, ', or send us an email at ', email, ' with the following email subject:');
   subject.classList.add('ranking-email-subject');
 }
+}).catch(error => {
+  console.error('Could not render rankings.', error);
+  const categories = document.querySelector('#ranking-categories');
+  if (categories) {
+    const message = document.createElement('p');
+    message.setAttribute('role', 'alert');
+    message.textContent = `Rankings could not be displayed: ${error.message}`;
+    categories.append(message);
+  }
+});

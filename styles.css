@@ -1398,3 +1398,53 @@ footer div > span:first-child { margin-bottom:10px; color:var(--lime); text-tran
   .admin-sidebar-nav, .admin-sidebar-tools { grid-template-columns:1fr; }
   .admin-sidebar-tools > span { grid-column:auto; }
 }
+.partnership-hero { min-height:680px; padding:170px 7% 90px; display:flex; align-items:center; color:white; background:linear-gradient(90deg,rgba(4,27,41,.9),rgba(4,27,41,.25)),url("https://upsa.ph/wp-content/uploads/2024/10/412022808_757090983120856_5369069496568967543_n-1.jpg") center 45%/cover; }
+.partnership-hero > div { max-width:790px; }
+.partnership-hero > div > span, .partnership-intro > div:first-child > span, .partnership-section-heading > div > span, .partnership-collaboration > div > span, .partnership-cta > div > span { color:var(--lime); font-family:"Barlow Condensed"; font-size:14px; font-weight:600; letter-spacing:2px; text-transform:uppercase; }
+.partnership-hero h1 { margin:18px 0; font-family:"Barlow Condensed"; font-size:clamp(68px,10vw,132px); line-height:.82; text-transform:uppercase; }
+.partnership-hero p { max-width:600px; margin:0; color:#e4eaec; font-size:19px; line-height:1.65; }
+.partnership-hero-actions { margin-top:34px; display:flex; align-items:center; flex-wrap:wrap; gap:24px; }
+.partnership-register-button { min-height:52px; padding:15px 19px; display:inline-flex; align-items:center; justify-content:space-between; gap:30px; color:var(--navy); background:var(--lime); font-family:"Barlow Condensed"; font-size:17px; font-weight:600; letter-spacing:.7px; text-transform:uppercase; transition:background .2s ease,transform .2s ease; }
+.partnership-register-button:hover { transform:translateY(-2px); background:#e0ed89; }
+.partnership-explore-link { padding-bottom:8px; display:inline-flex; align-items:center; gap:20px; border-bottom:1px solid rgba(255,255,255,.7); font-family:"Barlow Condensed"; font-size:17px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; }
+.partnership-intro { display:grid; grid-template-columns:.8fr 1.2fr; gap:9%; color:#102c40; background:var(--cream); }
+.partnership-intro > div:first-child > span, .partnership-section-heading > div > span { color:#52707b; }
+.partnership-intro h2, .partnership-section-heading h2, .partnership-collaboration h2, .partnership-cta h2 { margin:18px 0 0; font-family:"Barlow Condensed"; font-size:clamp(54px,6.5vw,86px); line-height:.88; text-transform:uppercase; }
+.partnership-intro > div:last-child > p { margin:0 0 18px; color:#52646a; font-size:17px; line-height:1.75; }
+.partnership-text-link { margin-top:8px; padding-bottom:7px; display:inline-flex; gap:24px; border-bottom:1px solid #102c40; font-family:"Barlow Condensed"; font-size:17px; font-weight:600; letter-spacing:.6px; text-transform:uppercase; }
+.partnership-areas { color:white; background:#0d354f; }
+.partnership-section-heading { display:grid; grid-template-columns:1fr .65fr; gap:8%; align-items:end; }
+.partnership-section-heading h2 { margin-top:16px; }
+.partnership-section-heading > p { margin:0 0 5px; color:#d5dfe4; font-size:16px; line-height:1.7; }
+.partnership-card-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; margin-top:48px; background:rgba(255,255,255,.22); }
+.partnership-card { min-height:245px; padding:30px; background:#0d354f; }
+.partnership-card > span { color:var(--lime); font-family:"Barlow Condensed"; font-size:13px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; }
+.partnership-card h3 { max-width:380px; margin:34px 0 12px; font-family:"Barlow Condensed"; font-size:clamp(30px,3.5vw,44px); line-height:.95; text-transform:uppercase; }
+.partnership-card p { max-width:480px; margin:0; color:#d5dfe4; font-size:15px; line-height:1.65; }
+.partnership-collaboration { padding:80px 7%; display:grid; grid-template-columns:1fr .65fr; gap:9%; align-items:center; color:#102c40; background:#dce7a4; }
+.partnership-collaboration > div > span { color:#43534c; }
+.partnership-collaboration h2 { max-width:760px; font-size:clamp(48px,6vw,76px); }
+.partnership-collaboration > p { margin:0; color:#354b50; font-size:17px; line-height:1.75; }
+.partnership-cta { padding:80px 7%; display:flex; align-items:flex-end; justify-content:space-between; gap:36px; color:white; background:#08283b; }
+.partnership-cta > div { max-width:760px; }
+.partnership-cta h2 { font-size:clamp(52px,6vw,82px); }
+.partnership-cta > div > p { max-width:620px; margin:20px 0 0; color:#d5dfe4; line-height:1.7; }
+.partnership-cta-actions { min-width:250px; display:flex; flex-direction:column; align-items:flex-start; gap:18px; }
+.partnership-email-link { padding-bottom:6px; border-bottom:1px solid rgba(255,255,255,.7); font-family:"Barlow Condensed"; font-size:15px; font-weight:600; letter-spacing:.7px; text-transform:uppercase; }
+.partnership-email-link span { margin-left:12px; }
+@media (max-width:900px) {
+  .partnership-intro, .partnership-section-heading, .partnership-collaboration { grid-template-columns:1fr; gap:30px; }
+  .partnership-cta { align-items:flex-start; flex-direction:column; }
+}
+@media (max-width:600px) {
+  .partnership-hero { min-height:600px; padding:140px 6% 70px; }
+  .partnership-hero h1 { font-size:clamp(60px,15vw,88px); }
+  .partnership-hero p { font-size:16px; }
+  .partnership-intro, .partnership-areas { padding:65px 6%; }
+  .partnership-card-grid { grid-template-columns:1fr; margin-top:35px; }
+  .partnership-card { min-height:210px; padding:24px; }
+  .partnership-card h3 { margin-top:28px; }
+  .partnership-collaboration, .partnership-cta { padding:65px 6%; }
+  .partnership-cta-actions { width:100%; }
+  .partnership-cta-actions .partnership-register-button { width:100%; }
+}

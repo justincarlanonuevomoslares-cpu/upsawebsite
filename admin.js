@@ -460,7 +460,7 @@ const syncWebsiteData = async trigger => {
     : 'Preparing website rankings and events…');
 
   try {
-    const seasons = window.upsaRankings;
+    const seasons = await window.upsaRankingsReady;
     if (!Array.isArray(seasons)) throw new Error('The local rankings source could not be loaded.');
     const results = await syncDashboardContent(supabase, seasons, message => {
       dashboardDataStatus.textContent = message;

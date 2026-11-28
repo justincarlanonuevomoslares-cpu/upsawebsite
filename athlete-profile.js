@@ -2,6 +2,8 @@ import { supabase } from './supabase/client.js';
 import { processInstagramEmbeds } from './instagram-embeds.js';
 import { getCountryFlag, getCountryName } from './countries.js';
 
+await Promise.all([window.upsaRankingsReady, window.upsaAthleteDataReady]);
+
 const profileRoot = document.querySelector('#athlete-profile-content');
 const unavailableRoot = document.querySelector('#athlete-profile-unavailable');
 const profileKey = new URLSearchParams(window.location.search).get('athlete');
